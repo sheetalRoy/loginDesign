@@ -1,0 +1,122 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <!-- META DATA -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->				
+
+        <!-- TITLE OF SITE -->
+        <title>iCamp</title>
+
+        <!-- for title img 
+                <link rel="shortcut icon"  type="image/icon"  href="assets/images/logo/favicon.png"/>
+        -->
+
+        <!--font-awesome.min.css-->
+        <link rel="stylesheet" href="{{ asset('bundles/assets/fonts/font-awesome/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('bundles/assets/fonts/font-awesome/css/font-awesome.css') }}">
+
+        <!--bootstrap.min.css-->
+        <link rel="stylesheet" href="{{ asset('bundles/assets/bootstrap/css/bootstrap.min.css') }}" type="text/css">
+        <link rel="stylesheet" href="{{ asset('bundles/acmedemo/css/login.css') }}" type="text/css">
+
+        <style>
+            
+        </style>
+
+    </head>
+    <body style="background-image: url('{{asset("bundles/assets/images/bg.png")}}');background-size: cover;background-repeat: no-repeat">
+        <div class="container-fluid indexPageContainer">
+            <div class="row" >
+                <div class="loginBoxLeft col-xs-12 col-sm-6" style="background-image: url('{{asset("bundles/assets/images/loginLeftBox2.png")}}');background-size: cover;">
+                    <img class="desktop-logo img-responsive" src="{{ asset('bundles/assets/images/Logo.png') }}" height="100" style="">
+                    <!-- icon red display none in desktop view-->
+                    {#<img class="mobile-logo" src="{{ asset('assets/images/logo/LMSLogoRed.png') }}" height="100" width="" style="">
+                    #}
+                </div>
+                <div class="loginBoxRight col-xs-12 col-sm-6">
+                    {#<div class="btn-group btn-group-sm pull-right" style="padding: 1%;">
+                        <button type="button" class="btn active" style="border: 1px solid #ccc;">Log In</button>
+                        <button type="button" class="btn btn-primary">Register</button>
+                    </div>#}
+                    <br/>
+                    
+                    <div id="" class="formContainer" style="">
+                        <div class="" style="padding: 5px 0px 0px 0px;">
+                            <p style="font-size: 16px;font-weight: bold;">Please Sign In</p>
+                        </div>
+                        {% if msg is defined%}
+                            <div {% if msg != '' %}class="alert alert-warning"{%else%} class="alert" {%endif%} style="height: 35px;">
+                            {% if msg is not null %}<p>{{msg}}</p>{% endif %}
+                        </div>
+                        {% endif %}
+                        <form class="" id="formLogin" name="frmLogin" method="post" action="{{path('_pms_dashboard')}}">
+                            <div class="form-group">
+                                <input type="hidden" name="ranStr" id="ranStr" value="{{salt}}" />
+                                
+                                <label class="input-label" for="txtuid">Username</label>
+                                <input type="text" class="form-control textbox" placeholder="type here your username" name="txtuid" id="txtuid" {% if uid != '' %}value="{{uid}}"{% endif %} autocomplete="off" autofocus required="required">
+                                <div class="bar"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="input-label" for="txtpasswd">Password</label>
+                                <input type="password" class="form-control textbox" placeholder="type here your password" name="txtpasswd" id="txtpasswd" onfocus="checkCaps(this,event);" required="required">
+                                <span style="display: none;" id="caps-warning">Caps is on!<span class="bottomindicator"></span></span>
+                                <div class="bar"></div>
+                            </div>
+                            <div class="form-group label-row captcha-row">
+                                {#<label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="remember"> Remember me
+                                </label>#}
+                                <span id="appCapchaArea">
+                                    <img src="{{ asset('bundles/Font/capcha.jpg')}}" id='appCapcha'/>
+                                </span>
+                                <img id="refreshCapcha" class="refresh-capcha" title="generate new varification code"  src="{{ asset('bundles/acmedemo/images/refreshing.png')}}"/>
+                                <span id="capchaurl" style="display:none;">{{url('_showCaptcha',{'rand':1|rand(1000)|encode})}}</span>
+                                <span id="capcharefresh" style="display:none;">{{ asset('bundles/acmedemo/images/refresh-animated.gif')}}</span>
+                                <span id="capchaimage" style="display:none;">{{ asset('bundles/Font/capcha.jpg')}}</span>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="form-group"> 
+                                <input name="txtcode"  id="txtcode" autocorrect="off" autocomplete="off" type="text" class="form-control textbox" placeholder="Captcha Code" required="required" />
+                            </div>
+                            <div class="form-group">    
+                                <input type="hidden" id="baseUrl" value="{{app.request.getBaseURL()}}"/>
+                                <input type="hidden" name="token" value="{{token}}" />
+                                <input type="hidden" name="resetpwd" id="resetpwd" value="Reset Password" />
+                                <input type="submit" class="btn btn-primary btnBlue" id="login" name="login" value="Sign In" onclick="return jFunctSubmit();">
+
+                            </div>
+                            <div class="form-group">        
+
+                                <a id="forgetPwdLink" style="color: #000;" href="{{path('_pms_forgot_password')}}">Forgot Password?</a>
+
+                            </div>
+
+                        </form>
+                    </div>
+                </div> <!--right container end-->
+
+            </div>     <!--row end -->           
+
+        </div>  <!--indexcontainer end -->
+
+        <!-- jquery link -->
+        <script src="{{ asset('bundles/assets/js/jquery.min.js') }}"></script>         
+
+        <!--bootstrap.min.js-->
+        <script type="text/javascript" src="{{ asset('bundles/assets/bootstrap/js/bootstrap.min.js') }}"></script>
+        {#        <script src="{{ asset('bundles/acmedemo/js/jquery.minv1.11.js') }}"></script>  #}
+        <script type="text/javascript" src="{{ asset('bundles/acmedemo/js/auth.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/acmedemo/js/common.js') }}"></script>
+        {#<script type="text/javascript">
+            window.history.forward();
+            function noBack() {
+                window.history.forward();
+            }
+        </script>#}
+    </body>
+
+</html>
